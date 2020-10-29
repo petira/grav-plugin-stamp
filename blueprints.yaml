@@ -1,13 +1,15 @@
 name: Stamp
-version: 1.0.0
-description: Automatically adds or changes date_modified, editor and revision to frontmatter when a page is saved via the Grav Admin Plugin
+slug: stamp
+type: plugin
+version: 1.0.1
+description: Automatically adds or modifies the date, date_modified, author, editor and revision to frontmatter when a page is saved via the Grav Admin Plugin.
 icon: save
 author:
   name: Vít Petira
   email: vit@petira.com
   url: http://www.petira.com
 homepage: https://github.com/petira/grav-plugin-stamp
-keywords: grav, plugin, auto, date, modified, editor, revision, frontmatter
+keywords: grav, plugin, auto, date, modified, author, editor, revision, frontmatter, petira
 bugs: https://github.com/petira/grav-plugin-stamp/issues
 docs: https://github.com/petira/grav-plugin-stamp/blob/develop/README.md
 license: MIT
@@ -38,4 +40,25 @@ form:
         0: Disabled
       validate:
         type: bool
-      help: Automatically adds or overrides date and author to frontmatter when a page is first saved via the Grav Admin Plugin
+      help: If the value of the revision variable is set to 'new', it provides the same behavior as when a page is first saved via the Grav Admin Plugin
+    date:
+      type: select
+      size: large
+      label: Date action
+      default: add
+      options:
+        none: None
+        add: Add (If the date exist, it will not be executed)
+        both: Modify (If the date does not exist, it will be added)
+      help: Automatically adds or modifies the date to frontmatter when a page is first saved via the Grav Admin Plugin
+    author:
+      type: select
+      size: large
+      label: Author action
+      default: add
+      options:
+        none: None
+        add: Add (If the author exist, it will not be executed)
+        both: Modify (If the author does not exist, it will be added)
+      help: Automatically adds or modifies the author to frontmatter when a page is first saved via the Grav Admin Plugin
+      
