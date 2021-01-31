@@ -2,7 +2,7 @@
 namespace Grav\Plugin;
 
 use Grav\Common\Plugin;
-use Grav\Common\Page\Page;
+use Grav\Common\Page\Interfaces\PageInterface;
 use RocketTheme\Toolbox\Event\Event;
 
 class StampPlugin extends Plugin
@@ -16,12 +16,12 @@ class StampPlugin extends Plugin
     public function onAdminSave(Event $event)
     {
         $object = $event['object'];
-        if ($object instanceof Page) {
+        if ($object instanceof PageInterface) {
             $date_modified = date($this->grav['config']->get('system.pages.dateformat.default', 'H:i:s d-m-Y'));
             $object->header()->date_modified = $date_modified;
             $editor = $this->grav['user']['fullname'];
             $object->header()->editor = $editor;
-            if (isset($object->header()->revision) && is_int($object->header()->revision) && $object->header()->revision > -1) {         
+            if (isset($object->header()->revision) && is_int($object->header()->revision) && $object->header()->revision > -1) {
                 $object->header()->revision = $object->header()->revision + 1;
             } else {
                 if (!($object->exists()) || ((isset($object->header()->revision) && ($object->header()->revision == 'new') && ($this->config->get('plugins.stamp.override'))))) {
@@ -35,4 +35,4 @@ class StampPlugin extends Plugin
             $event['object'] = $object;
         }
     }
-}                            
+}

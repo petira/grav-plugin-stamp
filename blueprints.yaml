@@ -1,13 +1,13 @@
 name: Stamp
 slug: stamp
 type: plugin
-version: 1.0.1
+version: 1.0.2
 description: Automatically adds or modifies the date, date_modified, author, editor and revision to frontmatter when a page is saved via the Grav Admin Plugin.
 icon: save
 author:
   name: Vít Petira
-  email: vit@petira.com
-  url: http://www.petira.com
+  email: petira@grav.cz
+  url: http://www.grav.cz
 homepage: https://github.com/petira/grav-plugin-stamp
 keywords: grav, plugin, auto, date, modified, author, editor, revision, frontmatter, petira
 bugs: https://github.com/petira/grav-plugin-stamp/issues
@@ -61,4 +61,3 @@ form:
         add: Add (If the author exist, it will not be executed)
         both: Modify (If the author does not exist, it will be added)
       help: Automatically adds or modifies the author to frontmatter when a page is first saved via the Grav Admin Plugin
-      
