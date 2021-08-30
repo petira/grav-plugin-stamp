@@ -19,7 +19,11 @@ class StampPlugin extends Plugin
         if ($object instanceof PageInterface) {
             $date_modified = date($this->grav['config']->get('system.pages.dateformat.default', 'H:i:s d-m-Y'));
             $object->header()->date_modified = $date_modified;
-            $editor = $this->grav['user']['fullname'];
+            if ($this->config->get('plugins.stamp.name') == 'full') {
+                $editor = $this->grav['user']['fullname'];
+            } else {
+                $editor = $this->grav['user']['username'];
+            }
             $object->header()->editor = $editor;
             if (isset($object->header()->revision) && is_int($object->header()->revision) && $object->header()->revision > -1) {
                 $object->header()->revision = $object->header()->revision + 1;

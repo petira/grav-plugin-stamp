@@ -1,21 +1,22 @@
 name: Stamp
 slug: stamp
 type: plugin
-version: 1.0.2
+version: 1.0.3
 description: Automatically adds or modifies the date, date_modified, author, editor and revision to frontmatter when a page is saved via the Grav Admin Plugin.
 icon: save
 author:
   name: Vít Petira
   email: petira@grav.cz
-  url: http://www.grav.cz
+  url: https://www.grav.cz
 homepage: https://github.com/petira/grav-plugin-stamp
+demo: https://www.grav.cz/blog
 keywords: grav, plugin, auto, date, modified, author, editor, revision, frontmatter, petira
 bugs: https://github.com/petira/grav-plugin-stamp/issues
 docs: https://github.com/petira/grav-plugin-stamp/blob/develop/README.md
 license: MIT
 
 dependencies:
-    - { name: admin, version: '>=1.2.3' }
+  - { name: grav, version: '>=1.6.0' }
 
 form:
   validation: strict
@@ -32,7 +33,7 @@ form:
         type: bool
     override:
       type: toggle
-      label: Override values
+      label: Override behaviour
       highlight: 1
       default: 0
       options:
@@ -40,7 +41,16 @@ form:
         0: Disabled
       validate:
         type: bool
-      help: If the value of the revision variable is set to 'new', it provides the same behavior as when a page is first saved via the Grav Admin Plugin
+      help: If the value of the revision variable is set to 'new', it provides the same behaviour as when a page is first saved via the Grav Admin Plugin
+    name:
+      type: select
+      size: large
+      label: Name format
+      default: full
+      options:
+        full: Full name
+        user: Username
+      help: Choice between using a full name (for direct display, e.g. 'Joe Doe', backward compatibility with previous versions of the Stamp Plugin and a stable version of the Auto Author Plugin) and a username (for further processing, e.g. 'admin')
     date:
       type: select
       size: large

@@ -6,9 +6,13 @@ The Grav **Stamp** Plugin is designed for [Grav CMS](http://github.com/getgrav/g
 
 The plugin extends and complements the [Auto Date Plugin](https://github.com/getgrav/grav-plugin-auto-date) and the [Auto Author Plugin](https://github.com/naucon/grav-plugin-auto-author) (wrong link, plugin is [here](https://github.com/naucon/grav-auto-author)), but is not dependent on them and works completely independently.
 
-The dependency on Admin Plugin v1.2.3 is now set (same version as now set for Auto Date and Auto Author plugins). If this causes problems, send me an [issue](https://github.com/petira/grav-plugin-stamp/issues) and I will update the version to the latest one.
+The dependency on Grav v1.6.0 is now set, but it is being developed on Grav v1.7 and Admin Panel v1.10.
 
 You can always find the latest version of this [documentation](https://github.com/petira/grav-plugin-stamp/blob/develop/README.md) on the project [homepage](https://github.com/petira/grav-plugin-stamp).
+
+If you find a problem or have a suggestion for improvement, send me an [issue](https://github.com/petira/grav-plugin-stamp/issues).
+
+## Basic settings
 
 ### Primary purpose
 
@@ -32,6 +36,20 @@ by <i class="fa fa-user"></i> {{ page.header.author }}
 {% endif %}
 ```
 
+#### Name format
+
+Since **Stamp v1.0.3** you can choose between using a full name and a username in the **Name format** (`name`) variable in the `stamp.yaml`. The default option is the **Full name** (`full`) for backward compatibility, but I recommend changing it to the **Username** (`user`), which can be further processed:
+
+```
+{% if page.find('/author/' ~ page.header.author) %}
+    <i class="fa fa-user"></i> [{{ page.find('/author/' ~ page.header.author).title }}](/author/{{ page.header.author }})
+{% else %}
+    <i class="fa fa-user"></i> {{ page.header.author }}
+{% endif %}
+```
+
+However, this example can also be used for an `editor`, or it can be combined with the above example for `revision`. It is not necessary to use only **pages**, but also **flex-objects** or other repositories with details about the **users** (`author` or `editor`).
+
 ### Secondary purpose
 
 **The secondary purpose** of this plugin is to be able to add or modify `date` and `author` variables **when the page is first saved via the Admin Plugin**. The Stamp Plugin can replace previous plugins (Auto Date Plugin and Auto Author Plugin), but it behaves differently, which must be taken into account. The main difference is that previous plugins generate variables when the page is created, and this plugin generates variables when the page is saved. If the date is to match the first save, using this plugin is the right choice.
@@ -43,15 +61,15 @@ Meaning of variables:
 
 It is therefore important to determine exactly what these values mean.
 
-**When the page is first saved via the Admin Plugin**, there are the following options for these variables:
+**When the page is first saved via the Admin Plugin**, there are the following options for these variables in the `stamp.yaml`:
 
 #### Date action
-* if the `date` does not exist and the Add option is selected in the plugin settings, the `date` is added. The `date` is the same as the first `date_modified`.
-* if the the Modify option is selected in the plugin settings, the `date` is always modified (if the `date` does not exist, it will be added). The `date` is the same as the first `date_modified`.
+* if the `date` does not exist and the **Add** option is selected in the plugin settings, the `date` is added. The `date` is the same as the first `date_modified`.
+* if the the **Modify** option is selected in the plugin settings, the `date` is always modified (if the `date` does not exist, it will be added). The `date` is the same as the first `date_modified`.
 
 #### Author action
-* if the `author` does not exist and the Add option is selected in the plugin settings, the `author` is added. The `author` is the same as the first `editor`.
-* if the the Modify option is selected in the plugin settings, the `author` is always modified (if the `author` does not exist, it will be added). The `author` is the same as the first `editor`.
+* if the `author` does not exist and the **Add** option is selected in the plugin settings, the `author` is added. The `author` is the same as the first `editor`.
+* if the the **Modify** option is selected in the plugin settings, the `author` is always modified (if the `author` does not exist, it will be added). The `author` is the same as the first `editor`.
 
 ## Specific settings
 
@@ -63,15 +81,15 @@ If it is necessary to set the value of the `revision` variable to 0 to simulate 
 
 The `revision` variable can be modified via expert mode (control value) or directly in the `.md` file (final value).
 
-### Simulate the behavior as when the page is first saved
+### Simulate the behaviour as when the page is first saved
 
-In practice, there are many cases where it is necessary to repeatedly save the page as a draft and publish only the final version. For this reason, it is possible to overwrite the values of the `date` and `author` variables by setting the value `new` to the `revision` variable. To prevent accidental overwriting, 'Override values' must also be enabled in the plugin settings. Otherwise, a value of `new` will only set the `revision` variable to `0`, just like 'null' in the previous setting.
+In practice, there are many cases where it is necessary to repeatedly save the page as a draft and publish only the final version. For this reason, it is possible to overwrite the values of the `date` and `author` variables by setting the value `new` to the `revision` variable. To prevent accidental overwriting, **Override behaviour** (`override`) variable must also be enabled in the plugin settings. Otherwise, a value of `new` will only set the `revision` variable to `0`, just like `null` in the previous setting.
 
-Other words, if the value of the `revision` variable is set to `new` and the `override` variable in the `stamp.yaml` is set to `true` (default is `false`), **it provides the same behavior as when the page is first saved via the Grav Admin Plugin**.
+Other words, if the value of the `revision` variable is set to `new` and the `override` variable in the `stamp.yaml` is set to `true` (default is `false`), **it provides the same behaviour as when the page is first saved via the Grav Admin Plugin**.
 
 ## Recommendation!
 
-It is recommended that you add the value of seconds to the `dateformat.default` variable in the `site.yaml` file for accurate time determination. It must be done directly in the `system.yaml` file, it is not possible via the Admin Plugin. The value must not be subsequently changed via the Admin Plugin.
+It is recommended that you add the value of seconds to the `dateformat.default` variable in the `site.yaml` file for accurate time determination:
 
 ```
 dateformat:
