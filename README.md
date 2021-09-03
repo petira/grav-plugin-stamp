@@ -42,7 +42,7 @@ Since **Stamp v1.0.3** you can choose between using a full name and a username i
 
 ```
 {% if page.find('/author/' ~ page.header.author) %}
-    <i class="fa fa-user"></i> [{{ page.find('/author/' ~ page.header.author).title }}](/author/{{ page.header.author }})
+    <i class="fa fa-user"></i> <a href="/autor/{{ page.header.author }}">{{ page.find('/autor/' ~ page.header.author).title|e }}</a>
 {% else %}
     <i class="fa fa-user"></i> {{ page.header.author }}
 {% endif %}
