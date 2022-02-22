@@ -1,3 +1,11 @@
+# v1.0.4
+## 02/22/2022
+
+1. [](#new)
+    * Added support for taxonomy type of `author`
+1. [](#improved)
+    * Improved documentation of new configuration parameters in `README.md`
+
 # v1.0.3
 ## 08/30/2021
 

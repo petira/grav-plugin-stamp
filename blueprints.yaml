@@ -1,8 +1,8 @@
 name: Stamp
 slug: stamp
 type: plugin
-version: 1.0.3
-description: Automatically adds or modifies the date, date_modified, author, editor and revision to frontmatter when a page is saved via the Grav Admin Plugin.
+version: 1.0.4
+description: Automatically adds or modifies the date, date_modified, author, editor, revision and taxonomy.author to frontmatter when a page is saved via the Grav Admin Plugin.
 icon: save
 author:
   name: Vít Petira
@@ -10,7 +10,7 @@ author:
   url: https://www.grav.cz
 homepage: https://github.com/petira/grav-plugin-stamp
 demo: https://www.grav.cz/blog
-keywords: grav, plugin, auto, date, modified, author, editor, revision, frontmatter, petira
+keywords: grav, plugin, auto, date, modified, author, editor, revision, taxonomy, frontmatter, petira
 bugs: https://github.com/petira/grav-plugin-stamp/issues
 docs: https://github.com/petira/grav-plugin-stamp/blob/develop/README.md
 license: MIT
@@ -33,7 +33,7 @@ form:
         type: bool
     override:
       type: toggle
-      label: Override behaviour
+      label: Override behavior
       highlight: 1
       default: 0
       options:
@@ -41,7 +41,7 @@ form:
         0: Disabled
       validate:
         type: bool
-      help: If the value of the revision variable is set to 'new', it provides the same behaviour as when a page is first saved via the Grav Admin Plugin
+      help: If the value of the revision variable is set to 'new', it provides the same behavior as when a page is first saved via the Grav Admin Plugin
     name:
       type: select
       size: large
@@ -71,3 +71,18 @@ form:
         add: Add (If the author exist, it will not be executed)
         both: Modify (If the author does not exist, it will be added)
       help: Automatically adds or modifies the author to frontmatter when a page is first saved via the Grav Admin Plugin
+    taxonomy_author:
+      type: select
+      size: large
+      label: Author (taxonomy type) action
+      default: none
+      options:
+        none: None
+        editor_only: Editor only
+        current_alphabetically: Current alphabetically
+        all_alphabetically: All alphabetically
+        editor_first_others_unchanged: Editor first, others unchanged
+        editor_last_others_unchanged: Editor last, others unchanged
+        editor_first_others_alphabetically: Editor first, others alphabetically
+        editor_last_others_alphabetically: Editor last, others alphabetically
+      help: Automatically adds or modifies the author (taxonomy type) to frontmatter when a page is saved via the Grav Admin Plugin

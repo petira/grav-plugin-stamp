@@ -17,7 +17,7 @@ class StampPlugin extends Plugin
     {
         $object = $event['object'];
         if ($object instanceof PageInterface) {
-            $date_modified = date($this->grav['config']->get('system.pages.dateformat.default', 'H:i:s d-m-Y'));
+            $date_modified = date($this->grav['config']->get('system.pages.dateformat.default', 'd-m-Y H:i:s'));
             $object->header()->date_modified = $date_modified;
             if ($this->config->get('plugins.stamp.name') == 'full') {
                 $editor = $this->grav['user']['fullname'];
@@ -25,6 +25,51 @@ class StampPlugin extends Plugin
                 $editor = $this->grav['user']['username'];
             }
             $object->header()->editor = $editor;
+            $taxonomy_author = array();
+            if (isset($object->header()->taxonomy['author'])) { $taxonomy_author = $object->header()->taxonomy['author']; }
+            $taxonomy_author_action = $this->config->get('plugins.stamp.taxonomy_author');
+            if (isset($object->header()->taxonomy_author)) { $taxonomy_author_action = $object->header()->taxonomy_author; }
+            $taxonomy_editor[] = $editor;
+            switch ($taxonomy_author_action) {
+                case 'none':
+                    $taxonomy_author = array_unique($taxonomy_author);
+                    break;
+                case 'editor_only':
+                    $taxonomy_author = $taxonomy_editor;
+                    break;
+                case 'current_alphabetically':
+                    $taxonomy_author = array_unique($taxonomy_author);
+                    sort($taxonomy_author);
+                    break;
+                case 'all_alphabetically':
+                    $taxonomy_author = array_merge($taxonomy_author, $taxonomy_editor);
+                    $taxonomy_author = array_unique($taxonomy_author);
+                    sort($taxonomy_author);
+                    break;
+                case 'editor_first_others_unchanged':
+                    $taxonomy_author = array_diff($taxonomy_author, $taxonomy_editor);
+                    $taxonomy_author = array_unique($taxonomy_author);
+                    $taxonomy_author = array_merge($taxonomy_editor, $taxonomy_author);
+                    break;
+                case 'editor_last_others_unchanged':
+                    $taxonomy_author = array_diff($taxonomy_author, $taxonomy_editor);
+                    $taxonomy_author = array_unique($taxonomy_author);
+                    $taxonomy_author = array_merge($taxonomy_author, $taxonomy_editor);
+                    break;
+                case 'editor_first_others_alphabetically':
+                    $taxonomy_author = array_diff($taxonomy_author, $taxonomy_editor);
+                    $taxonomy_author = array_unique($taxonomy_author);
+                    sort($taxonomy_author);
+                    $taxonomy_author = array_merge($taxonomy_editor, $taxonomy_author);
+                    break;
+                case 'editor_last_others_alphabetically':
+                    $taxonomy_author = array_diff($taxonomy_author, $taxonomy_editor);
+                    $taxonomy_author = array_unique($taxonomy_author);
+                    sort($taxonomy_author);
+                    $taxonomy_author = array_merge($taxonomy_author, $taxonomy_editor);
+                    break;
+            }
+            if ($taxonomy_author) { $object->modifyHeader('taxonomy.author', $taxonomy_author); }
             if (isset($object->header()->revision) && is_int($object->header()->revision) && $object->header()->revision > -1) {
                 $object->header()->revision = $object->header()->revision + 1;
             } else {

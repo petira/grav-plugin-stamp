@@ -1,6 +1,6 @@
 # Stamp Plugin
 
-The Grav **Stamp** Plugin is designed for [Grav CMS](http://github.com/getgrav/grav) and automatically adds or modifies the `date`, `date_modified`, `author`, `editor` and `revision` to frontmatter when the page is saved via the Grav Admin Plugin.
+The Grav **Stamp** Plugin is designed for [Grav CMS](http://github.com/getgrav/grav) and automatically adds or modifies the `date`, `date_modified`, `author`, `editor`, `revision` and `taxonomy.author` to frontmatter when the page is saved via the Grav Admin Plugin.
 
 ## Description
 
@@ -42,13 +42,44 @@ Since **Stamp v1.0.3** you can choose between using a full name and a username i
 
 ```
 {% if page.find('/author/' ~ page.header.author) %}
-    <i class="fa fa-user"></i> <a href="/autor/{{ page.header.author }}">{{ page.find('/autor/' ~ page.header.author).title|e }}</a>
+    <i class="fa fa-user"></i> <a href="/author/{{ page.header.author }}">{{ page.find('/author/' ~ page.header.author).title|e }}</a>
 {% else %}
     <i class="fa fa-user"></i> {{ page.header.author }}
 {% endif %}
 ```
 
-However, this example can also be used for an `editor`, or it can be combined with the above example for `revision`. It is not necessary to use only **pages**, but also **flex-objects** or other repositories with details about the **users** (`author` or `editor`).
+However, this example can also be used for an `editor`, or it can be combined with the above example for `revision`. It is not necessary to use only **pages**, but also **Flex Objects** or other repositories with details about the **users** (`author` or `editor`).
+
+#### Taxonomy type of `author`
+
+Since **Stamp v1.0.4** support for taxonomy type of `author` has been added, so it is now possible to save **multiple authors** automatically:
+
+`taxonomy.author` - combines the advantages of `author` and `editor` fields in taxonomy
+
+It is necessary to add the taxonomy type of `author` in the `site.yaml` file:
+
+```
+taxonomies: [category, tag, author]
+```
+
+The following rules apply:
+
+* In all actions, all duplicate values are removed. In the **None** action, duplicate values are also removed. This is a precautionary measure when saving in **Expert mode**.
+* The active user aka `editor` is always added as the `author` to the desired location in the array, except **None** and **Current alphabetically** actions.
+* In the **Editor only** action, all values will be replaced by the name of the active user aka `editor`!
+
+Specific actions:
+
+1. **None** - everything remains completely unchanged, except for the removal of duplicate values (**Expert mode** does not check for duplicates),
+2. **Editor only** - adds only the active user, deletes all other users,
+3. **Current alphabetically** - sorts current users alphabetically, does not solve the active user,
+4. **All alphabetically** - adds the active user, sorts all users alphabetically,
+5. **Editor first, others unchanged** - adds the active user to the beginning, leaves the other users unchanged,
+6. **Editor last, others unchanged** - adds the active user to the end, leaves the other users unchanged,
+7. **Editor first, others alphabetically** - adds the active user to the beginning, sorts the other users alphabetically,
+8. **Editor last, others alphabetically** - adds the active user to the end, sorts the other users alphabetically.
+
+If necessary, you can override page-level behavior through the `taxonomy_author` variable. The following values are allowed: `none`, `editor_only`, `current_alphabetically`, `all_alphabetically`, `editor_first_others_unchanged`, `editor_last_others_unchanged`, `editor_first_others_alphabetically` and `editor_last_others_alphabetically`.
 
 ### Secondary purpose
 
@@ -81,11 +112,11 @@ If it is necessary to set the value of the `revision` variable to 0 to simulate 
 
 The `revision` variable can be modified via expert mode (control value) or directly in the `.md` file (final value).
 
-### Simulate the behaviour as when the page is first saved
+### Simulate the behavior as when the page is first saved
 
-In practice, there are many cases where it is necessary to repeatedly save the page as a draft and publish only the final version. For this reason, it is possible to overwrite the values of the `date` and `author` variables by setting the value `new` to the `revision` variable. To prevent accidental overwriting, **Override behaviour** (`override`) variable must also be enabled in the plugin settings. Otherwise, a value of `new` will only set the `revision` variable to `0`, just like `null` in the previous setting.
+In practice, there are many cases where it is necessary to repeatedly save the page as a draft and publish only the final version. For this reason, it is possible to overwrite the values of the `date` and `author` variables by setting the value `new` to the `revision` variable. To prevent accidental overwriting, **Override behavior** (`override`) variable must also be enabled in the plugin settings. Otherwise, a value of `new` will only set the `revision` variable to `0`, just like `null` in the previous setting.
 
-Other words, if the value of the `revision` variable is set to `new` and the `override` variable in the `stamp.yaml` is set to `true` (default is `false`), **it provides the same behaviour as when the page is first saved via the Grav Admin Plugin**.
+Other words, if the value of the `revision` variable is set to `new` and the `override` variable in the `stamp.yaml` is set to `true` (default is `false`), **it provides the same behavior as when the page is first saved via the Grav Admin Plugin**.
 
 ## Recommendation!
 
@@ -93,13 +124,14 @@ It is recommended that you add the value of seconds to the `dateformat.default` 
 
 ```
 dateformat:
-  default: 'H:i:s d-m-Y'
+  default: 'd-m-Y H:i:s'
 ```
 
 ## To Do
 
-- [ ] Add support for taxonomy type of `author`
+- [x] Add support for taxonomy type of `author`
 - [ ] Add the optional ability to automatically modify the parent page (usually a `modular` page)
+- [ ] Add new variables to Twig, containing complete information about registered users, or from other sources
 - [ ] Translantions (after standard terms have been introduced)
 - [ ] Sample templates
 - [ ] Standardize the contents of the `README.md` file
