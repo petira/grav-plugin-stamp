@@ -120,7 +120,7 @@ Other words, if the value of the `revision` variable is set to `new` and the `ov
 
 ## Recommendation!
 
-It is recommended that you add the value of seconds to the `dateformat.default` variable in the `site.yaml` file for accurate time determination:
+It is recommended that you add the value of seconds to the `dateformat.default` variable in the `system.yaml` file for accurate time determination:
 
 ```
 dateformat:
