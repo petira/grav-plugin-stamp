@@ -81,6 +81,27 @@ Specific actions:
 
 If necessary, you can override page-level behavior through the `taxonomy_author` variable. The following values are allowed: `none`, `editor_only`, `current_alphabetically`, `all_alphabetically`, `editor_first_others_unchanged`, `editor_last_others_unchanged`, `editor_first_others_alphabetically` and `editor_last_others_alphabetically`.
 
+#### Twig variable `users`
+
+Since **Stamp v1.0.5** there is a Twig variable `users` which contains data from user accounts, specifically from the `/user/accounts` folder and the `*.yaml` files it contains. For now, only the variables `user.username`, `user.fullname`, `user.title` and `user.email` are available, which can be obtained from the `users` area in this way, for example:
+
+```
+{% set control = false %}
+{% for user in users %}
+    {% if page.header.author == user.username %}
+        <i class="fa fa-user"></i> {{ user.fullname|e }} <i class="fa fa-users"></i> {{ user.title|e }} <i class="fa fa-envelope"></i> <a href="mailto:{{ user.email|e }}">{{ user.email|e }}</a>
+        {% set control = true %}
+    {% endif %}
+{% endfor %}
+{% if control == false %}
+    <i class="fa fa-user"></i> {{ page.header.author }}
+{% endif %}
+```
+
+**Important!** For a Twig variable `users` to be available, the `Twig variables` button must be active, or the `twig` variable in the `stamp.yaml` must be set to `true` (default is `false`).
+
+Keep in mind that the Twig variable `users` contains information about all registered users, so when combined with `taxonomy.author`, information about multiple users can be obtained at once.
+
 ### Secondary purpose
 
 **The secondary purpose** of this plugin is to be able to add or modify `date` and `author` variables **when the page is first saved via the Admin Plugin**. The Stamp Plugin can replace previous plugins (Auto Date Plugin and Auto Author Plugin), but it behaves differently, which must be taken into account. The main difference is that previous plugins generate variables when the page is created, and this plugin generates variables when the page is saved. If the date is to match the first save, using this plugin is the right choice.
@@ -131,7 +152,7 @@ dateformat:
 
 - [x] Add support for taxonomy type of `author`
 - [ ] Add the optional ability to automatically modify the parent page (usually a `modular` page)
-- [ ] Add new variables to Twig, containing complete information about registered users, or from other sources
+- [x] Add new variables to Twig, containing complete information about registered users, or from other sources
 - [ ] Translantions (after standard terms have been introduced)
 - [ ] Sample templates
 - [ ] Standardize the contents of the `README.md` file

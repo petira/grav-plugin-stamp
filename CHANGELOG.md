@@ -1,3 +1,9 @@
+# v1.0.5
+## 12/26/2022
+
+1. [](#new)
+    * Added Twig variable `users` which contains data from user accounts
+
 # v1.0.4
 ## 02/22/2022
 

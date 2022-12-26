@@ -1,4 +1,5 @@
 enabled: true
+twig: false
 override: false
 name: full
 date: add

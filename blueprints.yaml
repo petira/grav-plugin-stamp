@@ -1,8 +1,8 @@
 name: Stamp
 slug: stamp
 type: plugin
-version: 1.0.4
-description: Automatically adds or modifies the date, date_modified, author, editor, revision and taxonomy.author to frontmatter when a page is saved via the Grav Admin Plugin.
+version: 1.0.5
+description: Automatically adds or modifies the date, date_modified, author, editor, revision and taxonomy.author to frontmatter when a page is saved via the Grav Admin Plugin. Optionally adds Twig variable users which contains data from user accounts.
 icon: save
 author:
   name: Vít Petira
@@ -31,6 +31,17 @@ form:
         0: Disabled
       validate:
         type: bool
+    twig:
+      type: toggle
+      label: Twig variables
+      highlight: 1
+      default: 0
+      options:
+        1: Enabled
+        0: Disabled
+      validate:
+        type: bool
+      help: Makes available Twig variables that can be used in page templates or directly processed in pages via Twig
     override:
       type: toggle
       label: Override behavior

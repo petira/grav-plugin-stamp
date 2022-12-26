@@ -4,16 +4,40 @@ namespace Grav\Plugin;
 use Grav\Common\Plugin;
 use Grav\Common\Page\Interfaces\PageInterface;
 use RocketTheme\Toolbox\Event\Event;
+use Grav\Common\Grav;
+use Grav\Common\User\User;
 
 class StampPlugin extends Plugin
 {
     public static function getSubscribedEvents()
     {
         return [
+            'onPagesInitialized' => ['onPagesInitialized', 0],
             'onAdminSave' => ['onAdminSave', 0]
         ];
     }
-    public function onAdminSave(Event $event)
+    public function onPagesInitialized(Event $event)
+    {
+        if ($this->config->get('plugins.stamp.twig')) {
+            $directory = Grav::instance()['locator']->findResource('account://');
+            $files = array_diff(scandir($directory), ['.', '..']);
+            $accounts = [];
+            foreach ($files as $file) {
+                if (strpos($file, YAML_EXT) !== false) {
+                    $accounts[] = User::load(trim(substr($file, 0, -5)));
+                }
+            }
+            $users = [];
+            foreach ($accounts as $account) {
+                $users[$account['username']]['username'] = $account['username'];
+                $users[$account['username']]['fullname'] = $account['fullname'];
+                $users[$account['username']]['title'] = $account['title'];
+                $users[$account['username']]['email'] = $account['email'];
+            }
+            $this->grav['twig']->twig_vars['users'] = $users;
+        }
+    }
+        public function onAdminSave(Event $event)
     {
         $object = $event['object'];
         if ($object instanceof PageInterface) {
