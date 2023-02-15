@@ -1,6 +1,6 @@
 # Stamp Plugin
 
-The Grav **Stamp** Plugin is designed for [Grav CMS](http://github.com/getgrav/grav) and automatically adds or modifies the `date`, `date_modified`, `author`, `editor`, `revision` and `taxonomy.author` to frontmatter when the page is saved via the Grav Admin Plugin.
+The Grav **Stamp** Plugin is designed for [Grav CMS](http://github.com/getgrav/grav) and automatically adds or modifies the `date`, `date_modified`, `author`, `editor`, `revision` and `taxonomy.author` to frontmatter when the page is saved via the Grav Admin Plugin. Optionally adds Twig variable users which contains data from user accounts.
 
 ## Description
 
@@ -145,7 +145,7 @@ It is recommended that you add the value of seconds to the `dateformat.default` 
 
 ```
 dateformat:
-  default: 'd-m-Y H:i:s'
+  default: 'Y-m-d H:i:s'
 ```
 
 ## To Do
