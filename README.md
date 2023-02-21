@@ -1,8 +1,6 @@
 # Stamp Plugin
 
-The Grav **Stamp** Plugin is designed for [Grav CMS](http://github.com/getgrav/grav) and automatically adds or modifies the `date`, `date_modified`, `author`, `editor`, `revision` and `taxonomy.author` to frontmatter when the page is saved via the Grav Admin Plugin. Optionally adds Twig variable users which contains data from user accounts.
-
-## Description
+The **Stamp** Plugin is an extension for [Grav CMS](https://github.com/getgrav/grav). The Stamp Plugin automatically adds or modifies the `date`, `date_modified`, `author`, `editor`, `revision` and `taxonomy.author` to frontmatter when the page is saved via the Grav Admin Plugin. Optionally adds Twig variable users which contains data from user accounts.
 
 The plugin extends and complements the [Auto Date Plugin](https://github.com/getgrav/grav-plugin-auto-date) and the [Auto Author Plugin](https://github.com/naucon/grav-plugin-auto-author) (wrong link, plugin is [here](https://github.com/naucon/grav-auto-author)), but is not dependent on them and works completely independently.
 
@@ -10,13 +8,55 @@ The dependency on Grav v1.6.0 is now set, but it is being developed on Grav v1.7
 
 You can always find the latest version of this [documentation](https://github.com/petira/grav-plugin-stamp/blob/develop/README.md) on the project [homepage](https://github.com/petira/grav-plugin-stamp).
 
-If you find a problem or have a suggestion for improvement, send me an [issue](https://github.com/petira/grav-plugin-stamp/issues).
+If you find a problem or have a suggestion for improvement, please send me an [issue](https://github.com/petira/grav-plugin-stamp/issues).
 
-## Basic settings
+If you translate the Stamp Plugin into another language, please send me the [strings](https://github.com/petira/grav-plugin-stamp/blob/develop/languages.yaml) via [pull request](https://github.com/petira/grav-plugin-stamp/pulls) or [issue](https://github.com/petira/grav-plugin-stamp/issues).
 
-### Primary purpose
+The [demo](https://www.grav.cz/demo/stamp) is available on the [Grav.cz](https://www.grav.cz) website.
 
-**The primary purpose** of this plugin is to automatically generate variables related to the page modification:
+## Installation
+
+Installing the Stamp Plugin can be done in one of three ways: The GPM (Grav Package Manager) installation method lets you quickly install the plugin with a simple terminal command, the manual method lets you do so via a zip file, and the admin method lets you do so via the Admin Plugin.
+
+### GPM Installation (Preferred)
+
+To install the plugin via the [GPM](https://learn.getgrav.org/cli-console/grav-cli-gpm), through your system's terminal (also called the command line), navigate to the root of your Grav installation, and enter:
+
+    bin/gpm install stamp
+
+This will install the Stamp Plugin into your `/user/plugins` directory within Grav. Its files can be found under `/your/site/grav/user/plugins/stamp`.
+
+### Manual Installation
+
+To install the plugin manually, download the zip-version of this repository and unzip it under `/your/site/grav/user/plugins`. Then rename the folder to `stamp`. You can find these files on [GitHub](https://github.com/petira/grav-plugin-stamp) or via [GetGrav.org](https://getgrav.org/downloads/plugins).
+
+You should now have all the plugin files under
+
+    /your/site/grav/user/plugins/stamp
+
+> NOTE: This plugin is a modular component for Grav which may require other plugins to operate, please see its [blueprints.yaml file on GitHub](https://github.com/petira/grav-plugin-stamp/blob/develop/blueprints.yaml).
+
+### Admin Plugin
+
+If you use the Admin Plugin, you can install the plugin directly by browsing the `Plugins` menu and clicking on the `Add` button.
+
+## Configuration
+
+Before configuring this plugin, you should copy the `/user/plugins/stamp/stamp.yaml` to `/user/config/plugins/stamp.yaml` and only edit that copy.
+
+Here is the default configuration and an explanation of available options:
+
+```yaml
+enabled: true
+```
+
+Note that if you use the Admin Plugin, a file with your configuration named `stamp.yaml` will be saved in the `/user/config/plugins` folder once the configuration is saved in the Admin.
+
+## Usage
+
+### Automatic generation of variables related to the page modification
+
+The primary purpose of this plugin is to automatically generate variables related to the page modification:
 
 * `date_modified` - the date the page was last saved
 * `editor` - the user who last saved the page
@@ -102,9 +142,9 @@ Since **Stamp v1.0.5** there is a Twig variable `users` which contains data from
 
 Keep in mind that the Twig variable `users` contains information about all registered users, so when combined with `taxonomy.author`, information about multiple users can be obtained at once.
 
-### Secondary purpose
+### Able to add or modify `date` and `author` variables when the page is first saved
 
-**The secondary purpose** of this plugin is to be able to add or modify `date` and `author` variables **when the page is first saved via the Admin Plugin**. The Stamp Plugin can replace previous plugins (Auto Date Plugin and Auto Author Plugin), but it behaves differently, which must be taken into account. The main difference is that previous plugins generate variables when the page is created, and this plugin generates variables when the page is saved. If the date is to match the first save, using this plugin is the right choice.
+The secondary purpose of this plugin is to be able to add or modify `date` and `author` variables **when the page is first saved via the Admin Plugin**. The Stamp Plugin can replace previous plugins (Auto Date Plugin and Auto Author Plugin), but it behaves differently, which must be taken into account. The main difference is that previous plugins generate variables when the page is created, and this plugin generates variables when the page is saved. If the date is to match the first save, using this plugin is the right choice.
 
 Meaning of variables:
 
@@ -122,8 +162,6 @@ It is therefore important to determine exactly what these values mean.
 #### Author action
 * if the `author` does not exist and the **Add** option is selected in the plugin settings, the `author` is added. The `author` is the same as the first `editor`.
 * if the the **Modify** option is selected in the plugin settings, the `author` is always modified (if the `author` does not exist, it will be added). The `author` is the same as the first `editor`.
-
-## Specific settings
 
 ### Modifying the value of the `revision` variable
 
@@ -148,6 +186,12 @@ dateformat:
   default: 'Y-m-d H:i:s'
 ```
 
+## Credits
+
+[Grav.cz](https://www.grav.cz) - Czech portal about [Grav CMS](https://github.com/getgrav/grav) containing lots of instructions and tips
+
+[Timestamp Plugin](https://github.com/petira/grav-plugin-timestamp) - plugin for [Grav CMS](https://github.com/getgrav/grav) written by the same [author](https://github.com/petira)
+
 ## To Do
 
 - [x] Add support for taxonomy type of `author`
@@ -155,7 +199,7 @@ dateformat:
 - [x] Add new variables to Twig, containing complete information about registered users, or from other sources
 - [ ] Translantions (after standard terms have been introduced)
 - [ ] Sample templates
-- [ ] Standardize the contents of the `README.md` file
+- [x] Standardize the contents of the `README.md` file
 - [ ] Add option for modification only (now merged with addition), if necessary
 - [ ] Add other variables, for example: `date_created`, `creator`, `date_accessed` (probably within a storage other than the frontmatter), `visitor` (probably within a storage other than the frontmatter), etc.
 - [ ] Add alternative `stamp` variables: `stamp.created.on`, `stamp.created.by`, `stamp.modified.on`, `stamp.modified.by`, etc., if necessary
